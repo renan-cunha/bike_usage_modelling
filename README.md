@@ -4,7 +4,11 @@
 
 * Clone the repo
 * Go the new rep directory
-* Install the prerequisites
+* Install the prerequisites 
+
+```
+pip install -r requirements.txt
+```
 
 ## Usage
 
