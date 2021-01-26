@@ -15,7 +15,7 @@ def pre_process_df(df, station_name_col, time_col):
     station_dayweek_df = station_df.loc[dayweek]
 
     station_dayweek_df = station_dayweek_df.sort_values(time_col)
-    time_interval = station_dayweek_df[time_col].diff().dt.total_seconds()
+    time_interval =   station_dayweek_df[time_col].diff().dt.total_seconds().dropna().astype(int)
     
     amplitude = time_interval.quantile(0.75) - time_interval.quantile(0.25)
     max_value = time_interval.quantile(0.75) + 3*amplitude
