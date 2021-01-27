@@ -34,13 +34,15 @@ def get_time(start_time, end_time):
             b = i
     return times
 
-bikeModel = BikeModel()
-start_time = bikeModel.next_bike_user('start', size=20)
-end_time = bikeModel.next_bike_user('end', size=20)
+while(True):
+    x = int(input("\nEntry the sample length:"))
+    bikeModel = BikeModel()
+    start_time = bikeModel.next_bike_user('start', x)
+    end_time = bikeModel.next_bike_user('end', x)
 
-env = simpy.Environment()
-times = get_time(start_time, end_time)
-estacao = Station(env, 0, 7, times)
+    env = simpy.Environment()
+    times = get_time(start_time, end_time)
+    estacao = Station(env, 0, 7, times)
 
-for time, action in times.items():
-    env.run()
+    for time, action in times.items():
+        env.run()
