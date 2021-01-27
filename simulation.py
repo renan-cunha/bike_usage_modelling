@@ -1,5 +1,4 @@
 import simpy
-import numpy as np
 from bike_model.bike_model import BikeModel
 from station import Station
 
@@ -28,20 +27,20 @@ def get_time(start_time, end_time):
 
     for i in aux:
         if i in exit_time:
-            times.update({i - b: 'retirada'})
+            times.update({i - b: 'take'})
             b = i
         elif i in arrival_time:
-            times.update({i - b: 'chegada'})
+            times.update({i - b: 'arrive'})
             b = i
     return times
 
 bikeModel = BikeModel()
-start_time = bikeModel.next_bike_user('start', size=10)
-end_time = bikeModel.next_bike_user('end', size=10)
+start_time = bikeModel.next_bike_user('start', size=20)
+end_time = bikeModel.next_bike_user('end', size=20)
 
 env = simpy.Environment()
 times = get_time(start_time, end_time)
 estacao = Station(env, 0, 7, times)
 
-for _timpe, action in times.items():
+for time, action in times.items():
     env.run()
