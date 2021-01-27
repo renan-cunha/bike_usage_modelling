@@ -1,47 +1,47 @@
 import simpy
 import numpy as np
 from bike_model.bike_model import BikeModel
-from estacao import Estacao
+from station import Station
 
 def get_time(start_time, end_time):
-    tempos_de_saida = []
-    tempos_de_chegada = []
+    exit_time = []
+    arrival_time = []
 
     for i in range(len(start_time)):
         if i == 0:
-            tempos_de_saida.append(start_time[i])
+            exit_time.append(start_time[i])
         else:
-            tempos_de_saida.append(start_time[i] + tempos_de_saida[i-1])
+            exit_time.append(start_time[i] + exit_time[i-1])
 
     for i in range(len(end_time)):
         if i == 0:
-            tempos_de_chegada.append(end_time[i])
+            arrival_time.append(end_time[i])
         else:
-            tempos_de_chegada.append(end_time[i] + tempos_de_chegada[i-1])
+            arrival_time.append(end_time[i] + arrival_time[i-1])
 
 
-    aux = tempos_de_saida.copy()
-    aux.extend(tempos_de_chegada.copy())
+    aux = exit_time.copy()
+    aux.extend(arrival_time.copy())
     aux.sort()
-    tempos = {}
+    times = {}
     b = 0
 
     for i in aux:
-        if i in tempos_de_saida:
-            tempos.update({i - b: 'retirada'})
+        if i in exit_time:
+            times.update({i - b: 'retirada'})
             b = i
-        elif i in tempos_de_chegada:
-            tempos.update({i - b: 'chegada'})
+        elif i in arrival_time:
+            times.update({i - b: 'chegada'})
             b = i
-    return tempos
+    return times
 
 bikeModel = BikeModel()
 start_time = bikeModel.next_bike_user('start', size=10)
 end_time = bikeModel.next_bike_user('end', size=10)
 
 env = simpy.Environment()
-tempos = get_time(start_time, end_time)
-estacao = Estacao(env, 0, 7, tempos)
+times = get_time(start_time, end_time)
+estacao = Station(env, 0, 7, times)
 
-for tempo, acao in tempos.items():
+for _timpe, action in times.items():
     env.run()
