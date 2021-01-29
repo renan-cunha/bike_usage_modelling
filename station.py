@@ -11,10 +11,10 @@ class Station:
         self.env.process(self.run())
         
     def get_leave_withdrawal(self):
-        return self.leave_bike_withdrawal;
+        return self.leave_bike_withdrawal
 
     def get_take_withdrawal(self):
-        return self.take_bike_withdrawal;
+        return self.take_bike_withdrawal
 
     def run(self):
         for _time in self.times:
@@ -32,5 +32,3 @@ class Station:
                     self.docks_slots += 1
                     self.bikes_slots -= 1
                     yield self.env.timeout(_time[0])
-        print("\nWithdrawal rate of leaving bikes in docks: {0}".format(self.get_leave_withdrawal()))
-        print("Withdrawal rate of taking bikes from docks: {0}".format(self.get_take_withdrawal()))
