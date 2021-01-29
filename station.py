@@ -21,20 +21,16 @@ class Station:
             if _time[1] == 'arrive':
                 if self.docks_slots == 0:
                     self.leave_bike_withdrawal += 1
-                    print("Gave up leaving the bike at {0} seconds".format(self.env.now))
                 else:
                     self.docks_slots -= 1
                     self.bikes_slots += 1
                     yield self.env.timeout(_time[0])
-                    print("Bike arrived at {0} seconds".format(self.env.now))
             elif _time[1] == 'take':
                 if self.bikes_slots == 0:
                     self.take_bike_withdrawal += 1
-                    print("Gave up taking the bike at {0} seconds".format(self.env.now))
                 else:
                     self.docks_slots += 1
                     self.bikes_slots -= 1
                     yield self.env.timeout(_time[0])
-                    print("Bike left at {0} seconds".format(self.env.now))
         print("\nWithdrawal rate of leaving bikes in docks: {0}".format(self.get_leave_withdrawal()))
         print("Withdrawal rate of taking bikes from docks: {0}".format(self.get_take_withdrawal()))
