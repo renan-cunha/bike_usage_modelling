@@ -29,26 +29,23 @@ The raw file has 300 Mb
 
 ```python3 main.py --download --extract --pre_process```
 
-
 ### Calling the function
 
 ```python3
 from bike_model.bike_model import BikeModel
+from datetime import timedelta
+
 bikeModel = BikeModel()
 
-# get interval in minutes
-# from the next user who will rent a bike
+# get interval in seconds, from users that will arrive in the span of 2 hours
 
-start_time = bikeModel.next_bike_user('start')
-# start_time equals to array([0.95468333])
+time_interval = timedelta(hours=2)
 
-start_time = bikeModel.next_bike_user('start', size=2)
-# start_time equals to array([0.95468333, 1.256677])
+start_time = bikeModel.next_bike_user('start', time_interval)
+# start_time equals to array([3, 2])
 
-# get interval in minutes
-# from the next user who will leave a bike
-
-end_time = bikeModel.next_bike_user('end', size=1)
+end_time = bikeModel.next_bike_user('end', time_interval)
+# start_time equals to array([1, 0, 0])
 ```
 
 
