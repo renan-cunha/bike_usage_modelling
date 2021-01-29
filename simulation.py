@@ -27,7 +27,6 @@ def get_time(start_time, end_time):
         aux.append((i, 'arrive'))
     
     aux.sort()
-    print('aux:', aux)
     times = []
     
     j = 0
@@ -38,11 +37,18 @@ def get_time(start_time, end_time):
         if i[1] == 'arrive':
             times.append((i[0] - j, 'arrive'))
             j = i[0]
-    # print(times)
     return times
 
 while(True):
     x = int(input("\nEntry the simulation time (in hours): "))
+    ex = True
+    while(ex):
+        docks = int(input("\nEntry the number of docks at the station: "))
+        bikes = int(input("\nEntry the number of bikes at the station: "))
+        if bikes <= docks:
+            ex = False
+        else:
+            print("The number of bikes cannot be greater than the number of docks.")
     time_interval = timedelta(hours=x)
     bikeModel = BikeModel()
     start_time = bikeModel.next_bike_user('start', time_interval)
@@ -50,7 +56,9 @@ while(True):
 
     env = simpy.Environment()
     times = get_time(start_time, end_time)
-    estacao = Station(env, 0, 7, times)
+    estacao = Station(env, docks-bikes, bikes, times)
+
+    print("Number of interactions:", len(times))
     
     for time in times:
         env.run()
